@@ -1,18 +1,23 @@
 package com.maxkorte.springjokes.controller;
 
+import com.maxkorte.springjokes.service.JokeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import guru.springframework.norris.chuck.ChuckNorrisQuotes;
 
 @Controller
-@RequestMapping("/chucknorrisjoke")
+@RequestMapping({"/chucknorrisjoke", "/joke"})
 public class JokesController {
-    @GetMapping("")
+    private final JokeService js;
+
+    public JokesController(JokeService js) {
+        this.js = js;
+    }
+
+    @GetMapping({"", "/"})
     public String index(Model model){
-        ChuckNorrisQuotes cnq = new ChuckNorrisQuotes();
-        model.addAttribute("joke", cnq.getRandomQuote());
+        model.addAttribute("joke", js.getJoke());
         return "chucknorrisjoke";
     }
 }
